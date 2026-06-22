@@ -1,7 +1,17 @@
-const { app, BrowserWindow} = require('electron/main')
-const path = require('node:path')
+const { app, BrowserWindow} = require('electron/main');
+const { ipcMain } = require('electron');
+const path = require('node:path');
+const focusManager = require('./focusManager');
 
 console.log('Hello from Electron')
+
+
+ipcMain.on('focus-mode', ()=>{
+	focusManager.enterFocusMode();
+})
+
+console.log(__dirname);
+console.log(path.join(__dirname, 'preload.js'));
 
 const createWindow = () => {
 	const win = new BrowserWindow({
@@ -13,6 +23,7 @@ const createWindow = () => {
 	})
 	
 	win.loadFile('index.html')
+	win.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

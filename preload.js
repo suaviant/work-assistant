@@ -1,7 +1,23 @@
-const { contextBridge } = require('electron/renderer')
+console.log("PRELOAD RUNNING")
 
-contextBridge.exposeInMainWorld('versions', {
-    node:()=> process.versions.node,
-    chrome:()=> process.versions.chrome,
-    electron:()=>process.versions.electron
-})
+
+try{
+    const { contextBridge, ipcRenderer } = require('electron')
+
+
+    contextBridge.exposeInMainWorld(
+        'electronAPI',
+        {
+            focusMode:()=>{
+                console.log("PRELOAD GOT focusMode()")
+                ipcRenderer.send('focus-mode')
+
+            }
+        }
+    )
+
+    console.log("EXPOSE SUCCEEDED")
+}
+catch (err) {
+    console.error(err)
+}

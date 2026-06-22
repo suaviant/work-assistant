@@ -1,3 +1,7 @@
+console.log("RENDERER RUNNING");
+console.log(window.electronAPI);
+
+
 const task = {
     steps: [
         "Determine budget",
@@ -8,6 +12,12 @@ const task = {
     ],
     currentStep: 2
 }
+
+const focusButton = document.getElementById("focusButton");
+focusButton.addEventListener("click", ()=>{
+    console.log("FOCUS BUTTON CLICKED")
+    window.electronAPI.focusMode();
+})
 
 function updateUI(){
     document.getElementById("objective").innerText = task.steps[task.currentStep];
