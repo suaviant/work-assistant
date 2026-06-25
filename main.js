@@ -41,17 +41,20 @@ ipcMain.on('focus-mode', ()=>{
 	mainWindow.moveTop();
 })
 
+function quitApp(){
+	focusManager.exitFocusMode();
+	app.quit();
+}
 
 app.whenReady().then(() => {
 	globalShortcut.register('Escape', ()=>{
-		//console.log("ESC");
-		//app.quit();
-		focusManager.exitFocusMode();
-		mainWindow.setAlwaysOnTop(false);
+		focusManager.exitFocusMode(()=>{
+			mainWindow.setAlwaysOnTop(false);
+		});
 	});
 
 	globalShortcut.register('Ctrl+Shift+Q', () => {
-		app.quit();
+		quitApp();
 	})
 
 	createWindow()
@@ -65,6 +68,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin'){
-		app.quit()
+		quitApp();
 	}
 })
