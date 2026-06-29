@@ -6,6 +6,7 @@ const userInput = document.getElementById('userInput');
 const submitButton = document.getElementById('submitButton');
 const focusButton = document.getElementById("focusButton");
 const workingIndicator = document.getElementById('workingIndicator');
+const replyArea = document.getElementById('replyArea');
 
 focusButton.addEventListener("click", ()=>{
     console.log("FOCUS BUTTON CLICKED")
@@ -27,6 +28,9 @@ window.appApi.onSetInputEnabled((enabled) => {
 });
 window.appApi.onSetWorkingEnabled((enabled) => {
     setWorkingEnabled(enabled);
+});
+window.appApi.onSetReply((reply) => {
+    replyArea.textContent = reply;
 });
 
 

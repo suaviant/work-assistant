@@ -34,6 +34,12 @@ try{
             });
         },
 
+        onSetReply: (callback) => {
+            ipcRenderer.on('ui:set-reply', (_event, reply) => {
+                callback(reply);
+            });
+        },
+
         submitUserText:(text)=> ipcRenderer.invoke('user:submit-text', text)
 
     });

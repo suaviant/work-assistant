@@ -1,3 +1,6 @@
+require('dotenv').config()
+
+const { askLLM } = require('./llm');
 const { app, BrowserWindow, globalShortcut} = require('electron/main');
 const { ipcMain } = require('electron');
 const path = require('node:path');
@@ -47,14 +50,22 @@ ipcMain.handle('user:submit-text', async(_event, text) => {
 	mainWindow.webContents.send('ui:set-working-enabled', true);
 	mainWindow.webContents.send('ui:set-input-visible', false);
 
-	await new Promise(resolve => setTimeout(resolve, 2000));
+	try{
+		const reply = await askLLM(text);
 
-	console.log('renderer submitted', text);
+		mainWindow.webContents.send('ui:set-reply', reply);
 
-	mainWindow.webContents.send('ui:set-working-enabled', false);
-	mainWindow.webContents.send('ui:set-input-visible', true);
+		return { ok: true};
+	} catch (error) {
+		console.error(error);
 
-	return {ok: true};
+		mainWindow.webContents.send('ui:set-reply', 'LLM request failed.');
+
+		return { ok: false, error: error.message};
+	} finally {
+		mainWindow.webContents.send('ui:set-working-enabled', false);
+		mainWindow.webContents.send('ui:set-input-visible', true);
+	}
 });
 
 ipcMain.on('focus-mode', ()=>{
