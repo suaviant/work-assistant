@@ -30,6 +30,11 @@ const createWindow = () => {
 
 	})
 	
+	mainWindow.webContents.on('before-input-event', (event, input)=>{
+		if (input.key === 'F11'){
+			event.preventDefault();
+		}
+	});
 	mainWindow.loadFile('index.html')
 	mainWindow.webContents.openDevTools()
 }
