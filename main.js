@@ -2,6 +2,7 @@ const { app, BrowserWindow, globalShortcut} = require('electron/main');
 const { ipcMain } = require('electron');
 const path = require('node:path');
 const focusManager = require('./focusManager');
+//const renderer = require('./renderer')
 
 console.log('Hello from Electron')
 
@@ -39,6 +40,7 @@ ipcMain.on('focus-mode', ()=>{
 	mainWindow.show();
 	mainWindow.focus();
 	mainWindow.moveTop();
+	mainWindow.webContents.send('ui:set-input-visible', false);
 })
 
 function quitApp(){
@@ -48,6 +50,7 @@ function quitApp(){
 
 app.whenReady().then(() => {
 	globalShortcut.register('Escape', ()=>{
+		mainWindow.webContents.send('ui:set-input-visible', true);
 		focusManager.exitFocusMode(()=>{
 			mainWindow.setAlwaysOnTop(false);
 		});

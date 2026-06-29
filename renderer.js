@@ -1,6 +1,30 @@
 console.log("RENDERER RUNNING");
 console.log(window.electronAPI);
 
+const inputArea = document.getElementById('inputArea');
+const userInput = document.getElementById('userInput');
+const submitButton = document.getElementById('submitButton');
+const focusButton = document.getElementById("focusButton");
+
+focusButton.addEventListener("click", ()=>{
+    console.log("FOCUS BUTTON CLICKED")
+    window.electronAPI.focusMode();
+})
+
+submitButton.addEventListener('click', handleSubmit);
+userInput.addEventListener('keydown', (event)=>{
+    if (event.key === 'Enter'){
+        handleSubmit();
+    }
+});
+
+window.appApi.onSetInputVisible((visible) => {
+    setInputVisible(visible);
+});
+window.appApi.onSetInputEnabled((visible) => {
+    setInputEnabled(visible);
+});
+
 
 const task = {
     steps: [
@@ -13,11 +37,24 @@ const task = {
     currentStep: 2
 }
 
-const focusButton = document.getElementById("focusButton");
-focusButton.addEventListener("click", ()=>{
-    console.log("FOCUS BUTTON CLICKED")
-    window.electronAPI.focusMode();
-})
+
+function handleSubmit() {
+    const text = userInput.value.trim();
+    if(!text) return;
+
+    userInput.value = '';
+
+    console.log('submitted:', text)
+}
+
+function setInputVisible(visible){
+    inputArea.style.display = visible ? 'block' : 'none';
+}
+
+function setInputEnabled(enabled){
+    userInput.disabled = !enabled;
+    submitButton.disabled = !enabled;
+}
 
 function updateUI(){
     document.getElementById("objective").innerText = task.steps[task.currentStep];
@@ -35,3 +72,4 @@ document.getElementById("doneButton")
     }
     updateUI();
 })
+
