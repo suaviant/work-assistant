@@ -40,6 +40,8 @@ try{
             });
         },
 
+        startBrowserTask:()=>{ ipcRenderer.invoke('user:start-browser-task')},
+
         submitUserText:(text)=> ipcRenderer.invoke('user:submit-text', text)
 
     });

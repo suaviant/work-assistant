@@ -3,6 +3,7 @@ require('dotenv').config()
 const { askLLM } = require('./llm');
 const { app, BrowserWindow, globalShortcut} = require('electron/main');
 const { ipcMain } = require('electron');
+const { spawn } = require('child_process');
 const path = require('node:path');
 const focusManager = require('./focusManager');
 //const renderer = require('./renderer')
@@ -41,6 +42,15 @@ const createWindow = () => {
 	mainWindow.loadFile('index.html')
 	mainWindow.webContents.openDevTools()
 }
+
+ipcMain.handle('user:start-browser-task', async()=> {
+	spawn('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', ['--new-window', "https://www.google.com/"], {
+		detached: true,
+		stdio: 'ignore'
+	}).unref();
+
+	return { ok: true };
+})
 
 ipcMain.handle('user:submit-text', async(_event, text) => {
 	if (typeof text !== 'string' || text.trim() === ''){

@@ -7,6 +7,8 @@ const submitButton = document.getElementById('submitButton');
 const focusButton = document.getElementById("focusButton");
 const workingIndicator = document.getElementById('workingIndicator');
 const replyArea = document.getElementById('replyArea');
+const startBrowserTaskButton = document.getElementById('startBrowserTaskButton');
+
 
 focusButton.addEventListener("click", ()=>{
     console.log("FOCUS BUTTON CLICKED")
@@ -18,6 +20,10 @@ userInput.addEventListener('keydown', (event)=>{
     if (event.key === 'Enter'){
         handleSubmit();
     }
+});
+
+startBrowserTaskButton.addEventListener('click', ()=> {
+    window.appApi.startBrowserTask();
 });
 
 window.appApi.onSetInputVisible((visible) => {
