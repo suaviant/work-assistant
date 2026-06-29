@@ -49,12 +49,13 @@ const createWindow = () => {
 
 ipcMain.handle('user:start-browser-task', async()=> {
 	spawn('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', ['--new-window', "https://www.google.com/"], {
-		detached: true,
-		stdio: 'ignore'
+		stdio: 'ignore',
+		detached: true
 	}).unref();
 
 	return { ok: true };
 })
+
 
 ipcMain.handle('user:submit-text', async(_event, text) => {
 	if (typeof text !== 'string' || text.trim() === ''){
