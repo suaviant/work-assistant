@@ -16,6 +16,7 @@ console.log(__dirname);
 console.log(path.join(__dirname, 'preload.js'));
 
 let mainWindow;
+let isQuitting = false;
 
 const createWindow = () => {
 	mainWindow = new BrowserWindow({
@@ -41,6 +42,9 @@ const createWindow = () => {
 	});
 	mainWindow.loadFile('index.html')
 	mainWindow.webContents.openDevTools()
+	mainWindow.on('close', ()=>{
+		quitApp();
+	})
 }
 
 ipcMain.handle('user:start-browser-task', async()=> {
@@ -87,6 +91,8 @@ ipcMain.on('focus-mode', ()=>{
 })
 
 function quitApp(){
+	if (isQuitting) return;
+	isQuitting = true;
 	focusManager.exitFocusMode(true);
 	app.quit();
 }
@@ -99,9 +105,6 @@ app.whenReady().then(() => {
 	});
 
 	globalShortcut.register('Ctrl+Shift+Q', () => {
-		quitApp();
-	})
-	globalShortcut.register('Alt+F4', () => {
 		quitApp();
 	})
 
