@@ -23,8 +23,14 @@ try{
         },
 
         onSetInputEnabled: (callback) => {
-            ipcRenderer.on('ui:set-input-enabled', (_event, visible) => {
-                callback(visible);
+            ipcRenderer.on('ui:set-input-enabled', (_event, enabled) => {
+                callback(enabled);
+            });
+        },
+
+        onSetWorkingEnabled: (callback) => {
+            ipcRenderer.on('ui:set-working-enabled', (_event, enabled) => {
+                callback(enabled);
             });
         },
 

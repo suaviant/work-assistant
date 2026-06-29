@@ -5,6 +5,7 @@ const inputArea = document.getElementById('inputArea');
 const userInput = document.getElementById('userInput');
 const submitButton = document.getElementById('submitButton');
 const focusButton = document.getElementById("focusButton");
+const workingIndicator = document.getElementById('workingIndicator');
 
 focusButton.addEventListener("click", ()=>{
     console.log("FOCUS BUTTON CLICKED")
@@ -21,8 +22,11 @@ userInput.addEventListener('keydown', (event)=>{
 window.appApi.onSetInputVisible((visible) => {
     setInputVisible(visible);
 });
-window.appApi.onSetInputEnabled((visible) => {
-    setInputEnabled(visible);
+window.appApi.onSetInputEnabled((enabled) => {
+    setInputEnabled(enabled);
+});
+window.appApi.onSetWorkingEnabled((enabled) => {
+    setWorkingEnabled(enabled);
 });
 
 
@@ -50,12 +54,15 @@ async function handleSubmit() {
 }
 
 function setInputVisible(visible){
-    inputArea.style.display = visible ? 'block' : 'none';
+    inputArea.hidden = !visible;
 }
 
 function setInputEnabled(enabled){
     userInput.disabled = !enabled;
     submitButton.disabled = !enabled;
+}
+function setWorkingEnabled(isWorking){
+    workingIndicator.hidden = !isWorking;
 }
 
 function updateUI(){

@@ -44,7 +44,16 @@ ipcMain.handle('user:submit-text', async(_event, text) => {
 		return {ok: false, error: 'Empty input'};
 	}
 
+	mainWindow.webContents.send('ui:set-working-enabled', true);
+	mainWindow.webContents.send('ui:set-input-visible', false);
+
+	await new Promise(resolve => setTimeout(resolve, 2000));
+
 	console.log('renderer submitted', text);
+
+	mainWindow.webContents.send('ui:set-working-enabled', false);
+	mainWindow.webContents.send('ui:set-input-visible', true);
+
 	return {ok: true};
 });
 
