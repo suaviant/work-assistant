@@ -88,14 +88,14 @@ ipcMain.on('focus-mode', ()=>{
 })
 
 function quitApp(){
-	focusManager.exitFocusMode();
+	focusManager.exitFocusMode(true);
 	app.quit();
 }
 
 app.whenReady().then(() => {
 	globalShortcut.register('Escape', ()=>{
 		mainWindow.webContents.send('ui:set-input-visible', true);
-		focusManager.exitFocusMode(()=>{
+		focusManager.exitFocusMode(false, ()=>{
 			mainWindow.setAlwaysOnTop(false);
 		});
 	});
