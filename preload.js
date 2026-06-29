@@ -26,7 +26,9 @@ try{
             ipcRenderer.on('ui:set-input-enabled', (_event, visible) => {
                 callback(visible);
             });
-        }
+        },
+
+        submitUserText:(text)=> ipcRenderer.invoke('user:submit-text', text)
 
     });
 

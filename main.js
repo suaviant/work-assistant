@@ -39,6 +39,15 @@ const createWindow = () => {
 	mainWindow.webContents.openDevTools()
 }
 
+ipcMain.handle('user:submit-text', async(_event, text) => {
+	if (typeof text !== 'string' || text.trim() === ''){
+		return {ok: false, error: 'Empty input'};
+	}
+
+	console.log('renderer submitted', text);
+	return {ok: true};
+});
+
 ipcMain.on('focus-mode', ()=>{
 	focusManager.enterFocusMode();
 	mainWindow.setAlwaysOnTop(true, "screen-saver");

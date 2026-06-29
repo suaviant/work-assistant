@@ -38,13 +38,15 @@ const task = {
 }
 
 
-function handleSubmit() {
+async function handleSubmit() {
     const text = userInput.value.trim();
     if(!text) return;
 
     userInput.value = '';
 
-    console.log('submitted:', text)
+    const result = await window.appApi.submitUserText(text);
+
+    console.log(result);
 }
 
 function setInputVisible(visible){
