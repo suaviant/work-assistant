@@ -6,7 +6,6 @@ const { ipcMain } = require('electron');
 const { spawn } = require('child_process');
 const path = require('node:path');
 const focusManager = require('./focusManager');
-//const renderer = require('./renderer')
 
 console.log('Hello from Electron')
 
