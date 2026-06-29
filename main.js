@@ -84,7 +84,6 @@ ipcMain.on('focus-mode', ()=>{
 	mainWindow.show();
 	mainWindow.focus();
 	mainWindow.moveTop();
-	mainWindow.webContents.send('ui:set-input-visible', false);
 })
 
 function quitApp(){
@@ -94,13 +93,15 @@ function quitApp(){
 
 app.whenReady().then(() => {
 	globalShortcut.register('Escape', ()=>{
-		mainWindow.webContents.send('ui:set-input-visible', true);
 		focusManager.exitFocusMode(false, ()=>{
 			mainWindow.setAlwaysOnTop(false);
 		});
 	});
 
 	globalShortcut.register('Ctrl+Shift+Q', () => {
+		quitApp();
+	})
+	globalShortcut.register('Alt+F4', () => {
 		quitApp();
 	})
 
