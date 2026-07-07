@@ -40,6 +40,12 @@ try{
             });
         },
 
+        onSetTaskInfo: (callback) => {
+            ipcRenderer.on('ui:set-task-info', (_event, taskInfo) => {
+                callback(taskInfo);
+            });
+        },
+
         startBrowserTask:()=>{ ipcRenderer.invoke('user:start-browser-task')},
 
         submitUserText:(text)=> ipcRenderer.invoke('user:submit-text', text)

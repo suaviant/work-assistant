@@ -38,18 +38,20 @@ window.appApi.onSetWorkingEnabled((enabled) => {
 window.appApi.onSetReply((reply) => {
     replyArea.textContent = reply;
 });
+window.appApi.onSetTaskInfo((taskInfo) => {
+    setTaskInfo(taskInfo);
+})
 
 
-const task = {
-    steps: [
-        "Determine budget",
-        "Identify interests",
-        "Shortlist three gifts",
-        "Compare prices",
-        "Purchase"
-    ],
-    currentStep: 2
-}
+let goal = "Buy present for Dad.";
+let currentStep = 0;
+let steps = [
+    { title:"Determine budget", detailed_instruction:"" },
+    { title:"Identify interests", detailed_instruction:"" },
+    { title:"Shortlist three gifts", detailed_instruction:"" },
+    { title:"Compare prices", detailed_instruction:"" },
+    { title:"Purchase", detailed_instruction:"" },
+];
 
 
 async function handleSubmit() {
@@ -61,6 +63,13 @@ async function handleSubmit() {
     const result = await window.appApi.submitUserText(text);
 
     console.log(result);
+}
+
+function setTaskInfo(taskInfo){
+    goal = taskInfo.goal;
+    steps = taskInfo.steps;
+    currentStep = 0;
+    updateUI();
 }
 
 function setInputVisible(visible){
@@ -76,18 +85,18 @@ function setWorkingEnabled(isWorking){
 }
 
 function updateUI(){
-    document.getElementById("objective").innerText = task.steps[task.currentStep];
+    document.getElementById("objective").innerText = steps[currentStep].title;
 
     document.getElementById("progress").innerText = 
-    `Progress ${task.currentStep+1}/${task.steps.length}`;
+    `Progress ${currentStep+1}/${steps.length}`;
 }
 
 updateUI();
 
 document.getElementById("doneButton")
 .addEventListener("click", ()=> {
-    if (task.currentStep < task.steps.length -1){
-        task.currentStep++;
+    if (currentStep < steps.length -1){
+        currentStep++;
     }
     updateUI();
 })

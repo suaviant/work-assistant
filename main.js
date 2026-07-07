@@ -65,9 +65,15 @@ ipcMain.handle('user:submit-text', async(_event, text) => {
 	mainWindow.webContents.send('ui:set-input-visible', false);
 
 	try{
-		const reply = await askLLM(text);
-
-		mainWindow.webContents.send('ui:set-reply', reply);
+		const parsedReply = await askLLM(text);
+		if (parsedReply != null){
+			mainWindow.webContents.send('ui:set-reply', "valid reply");
+			mainWindow.webContents.send('ui:set-task-info', parsedReply);
+		}
+		else
+		{
+			mainWindow.webContents.send('ui:set-reply', "bad reply");
+		}
 
 		return { ok: true};
 	} catch (error) {
